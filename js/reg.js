@@ -1,9 +1,9 @@
 $(document).ready(function() {
 	$('#error').hide();
-	$("#enter_btn").click(function(){
+	$("#new_users").click(function(){
 		$('#error').hide();
-		var login = $("#username").val();
-		if(login == ""){
+		var username = $("#username").val();
+		if(username == ""){
 			console.log("null username");
 			document.getElementById("error").innerHTML="Поле с именем не заполнено";
 			$('#error').show();
@@ -11,8 +11,8 @@ $(document).ready(function() {
 			return false;
 		}
 
-		var pass = $("#userlastname").val();
-		if(pass == ""){
+		var userlastname = $("#userlastname").val();
+		if(userlastname == ""){
 			console.log("null userlastname");
 			document.getElementById("error").innerHTML="Поле с фамилией не заполнено";
 			$('#error').show();
@@ -20,22 +20,45 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		var pass = $("#telephone").val();
-		if(pass == ""){
+		var telephone = $("#telephone").val();
+		if(telephone == ""){
 			console.log("null telephone");
 			document.getElementById("error").innerHTML="Не указан телефон";
 			$('#error').show();
 			$("#telephone").focus();
 			return false;
 		}
+
+		$.post("moduls/functions.php",
+			{
+				func: "new_users",
+				username: username,
+				userlastname: userlastname,
+				databirthday: $("#databirthday").val(),
+				company: $("#company").val(), 
+				position: $("#position").val(),
+				telephone: telephone
+			},
+			function(data, status){
+				console.log(status);
+			});
 		
 	});
 
-	$("#telephone").keypress(function(){
+	$("#telephone").keypress(function(event){
 		event = event || window.event;
-		console.log(event.charCode);
-		if (event.charCode && event.charCode != 0 && event.charCode == 43 && 
-			event.charCode != 46 && (event.charCode < 48 || event.charCode > 57) )
+		if (event.charCode && event.charCode != 0 && event.charCode != 46 && 
+			(event.charCode < 48 || event.charCode > 57))
     		return false;
+	});
+	$("#telephone").keyup(function(event){
+		var telephone = $("#telephone").val();
+		if(telephone.length >= 1){
+			telephone = telephone.replace("+", "");
+			$("#telephone").val("+"+telephone);
+		}
+		if(telephone == "+"){
+			$("#telephone").val("");	
+		}
 	});
 });
