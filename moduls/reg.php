@@ -1,4 +1,21 @@
+<?php
+session_start();
+?>
 <script type="text/javascript" src="js/reg.js"></script>
+<?php
+    if ($_SESSION["admin"]){
+        echo '<div id="admin">
+            <script type="text/javascript">
+                $("#admin_buttom").click(function(){
+                    $.get("moduls/admin.php", function(data){
+                        $("#container").html(data);
+                    });
+                });
+            </script>
+            <div id="admin_buttom" name="admin_buttom" class="button">Панель администратора</div>
+        </div>';
+    }
+?>
 <form id="login">
     <h1>Форма регистрации</h1>
     <div id="error"></div>

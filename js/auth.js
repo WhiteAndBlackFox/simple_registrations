@@ -27,21 +27,20 @@ $(document).ready(function() {
 				password: pass
 			},
 			function(data, status){
+				console.log(data);
 				data = $.parseJSON(data);
 				if(data.status){
-					if (data.access == 0){
-						$.get("moduls/reg.php", function(data_php){
-							$("#container").html(data_php);
-							$("#new_users").remove();
+					$.get("moduls/reg.php", function(data_php){
+						$("#container").html(data_php);
+						$("#new_users").remove();
 
-							$('#username').val(data.username);
-							$('#userlastname').val(data.userlastname);
-							$('#databirthday').val(data.databirthday);
-							$('#company').val(data.company);
-							$('#position').val(data.position);
-							$('#telephone').val(data.telephone);
-						});
-					}
+						$('#username').val(data.username);
+						$('#userlastname').val(data.userlastname);
+						$('#databirthday').val(data.databirthday);
+						$('#company').val(data.company);
+						$('#position').val(data.position);
+						$('#telephone').val(data.telephone);
+					});
 				} else {
 					document.getElementById("error").innerHTML="Неверный номер или пароль";
 					$('#error').show();

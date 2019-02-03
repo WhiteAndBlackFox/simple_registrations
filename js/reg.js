@@ -65,9 +65,16 @@ $(document).ready(function() {
 	});
 
 	$("#cancel").click(function(){
-		$.get("moduls/auth.php", function(data){
-			$("#container").html(data);
-		});
+		$.post("moduls/functions.php",
+			{
+				func: "clear_sessions"
+			},
+			function(data, status){
+				$.get("moduls/auth.php", function(data){
+					$("#container").html(data);
+				});
+			});
+		
 	});
 
 	$("#save_users").click(function(){

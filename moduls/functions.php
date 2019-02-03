@@ -1,4 +1,7 @@
 <?php
+session_start();
+?>
+<?php
 switch ($_POST['func']) {
 	case 'new_users':
 		new_user();
@@ -9,8 +12,39 @@ switch ($_POST['func']) {
 	case 'chenge_users':
 		chenge_users();
 		break;
+	case 'clear_sessions':
+		clear_sessions();
+		break;
+	case 'table_users':
+		if($_SESSION['admin']){
+			table_users();
+		}
+		break;
 	default:
 		break;
+}
+
+function table_users(){
+	$table = "";
+	$filename = '../reg_users.csv';
+	if(file_exists($filename)){
+		$file_users = fopen($filename, "r");	
+		while($row = fgetcsv($file_users)){
+			$table .= "<tr><td>{$row[0]}</td>
+			<td>{$row[1]}</td>
+			<td>{$row[2]}</td>
+			<td>{$row[3]}</td>
+			<td>{$row[4]}</td>
+			<td>{$row[5]}</td>
+			</tr>";
+		}
+	}
+	echo $table;
+}
+
+function clear_sessions(){
+	session_unset();
+	session_destroy();
 }
 
 function chenge_users(){
@@ -48,7 +82,10 @@ function auth_user(){
 	$row = check_user($filename, $_POST['username'], $_POST['password'], false);
 	if(is_null($row)){
 		$row = array('status'=>false);
-	} 
+	}
+	if($row['access'] == 1){
+		$_SESSION["admin"] = true;
+	}
 	echo json_encode($row);
 }
 
