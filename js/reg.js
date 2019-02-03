@@ -30,4 +30,12 @@ $(document).ready(function() {
 		}
 		
 	});
+
+	$("#telephone").keypress(function(){
+		event = event || window.event;
+		console.log(event.charCode);
+		if (event.charCode && event.charCode != 0 && event.charCode == 43 && 
+			event.charCode != 46 && (event.charCode < 48 || event.charCode > 57) )
+    		return false;
+	});
 });
