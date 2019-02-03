@@ -2,8 +2,8 @@ $(document).ready(function() {
 	$('#error').hide();
 	$("#enter_btn").click(function(){
 		$('#error').hide();
-		var login = $("#username").val();
-		if(login == ""){
+		var username = $("#username").val();
+		if(username == ""){
 			console.log("null username");
 			document.getElementById("error").innerHTML="Поле с логином не заполнено";
 			$('#error').show();
@@ -19,13 +19,60 @@ $(document).ready(function() {
 			$("#password").focus();
 			return false;
 		}
+
+		$.post("moduls/functions.php",
+			{
+				func: "auth_users",
+				username: username,
+				password: pass
+			},
+			function(data, status){
+				data = $.parseJSON(data);
+				if(data.status){
+					if (data.access == 0){
+						$.get("moduls/reg.php", function(data_php){
+							$("#container").html(data_php);
+							$("#new_users").remove();
+
+							$('#username').val(data.username);
+							$('#userlastname').val(data.userlastname);
+							$('#databirthday').val(data.databirthday);
+							$('#company').val(data.company);
+							$('#position').val(data.position);
+							$('#telephone').val(data.telephone);
+						});
+					}
+				} else {
+					document.getElementById("error").innerHTML="Неверный номер или пароль";
+					$('#error').show();
+					$("#password").focus();
+				}
+			});
 		
 	});
 
 	$("#reg").click(function(){
-		/*$("#container").html("moduls/reg.php");*/
 		$.get("moduls/reg.php", function(data){
 			$("#container").html(data);
+			$("#save_users").remove();
 		});
 	});
+
+	$("#username").keypress(function(event){
+		event = event || window.event;
+		if (event.charCode && event.charCode != 0 && event.charCode != 46 && 
+			(event.charCode < 48 || event.charCode > 57))
+    		return false;
+	});
+	$("#username").keyup(function(event){
+		var username = $("#username").val();
+		if(username.length >= 1){
+			username = username.replace("+", "");
+			$("#username").val("+"+username);
+		}
+		if(username == "+"){
+			$("#username").val("");	
+		}
+	});
+
 });

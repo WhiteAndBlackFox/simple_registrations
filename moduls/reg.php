@@ -11,12 +11,22 @@
         <input id="databirthday" type="date" placeholder="dd.mm.yyyy" required>
         <label for="company">Компания</label>
         <input id="company" type="text" placeholder="ООО МЕТА" required>
-        <label for="position">Должность</label>s
+        <label for="position">Должность</label>
         <input id="position" type="text" placeholder="Программист" required>
         <label for="telephone">Телефон<span style="color: #BA0000; font-family: Verdana; font-size: 10pt; font-weight: bold;"> *</span></label>
         <input id="telephone" type="text" placeholder="+1234567890" required>
+        <label for="password">Пароль<span style="color: #BA0000; font-family: Verdana; font-size: 10pt; font-weight: bold;"> *</span></label>
+        <input id="password" type="password" placeholder="Пароль" required>
     </div>
     <div id="actions">
-            <div class="button" id="new_users" name="new_users">ЗАРЕГЕСТРИРОВАТЬСЯ</dv>
+            <table>
+                <td>
+                    <div class="button" id="new_users" name="new_users">ЗАРЕГЕСТРИРОВАТЬСЯ</div>
+                    <div class="button" id="save_users" name="save_users">СОХРАНИТЬ ИЗМЕНЕНИЯ</div>
+                </td>
+                <td>
+                    <div class="button" id="cancel" name="cancel">ОТМЕНА</div>
+                </td>
+            </table>
     </div>
 </form>

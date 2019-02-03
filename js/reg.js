@@ -29,6 +29,15 @@ $(document).ready(function() {
 			return false;
 		}
 
+		var password = $("#password").val();
+		if(password == ""){
+			console.log("null password");
+			document.getElementById("error").innerHTML="Не указан пароль";
+			$('#error').show();
+			$("#password").focus();
+			return false;
+		}
+
 		$.post("moduls/functions.php",
 			{
 				func: "new_users",
@@ -37,13 +46,124 @@ $(document).ready(function() {
 				databirthday: $("#databirthday").val(),
 				company: $("#company").val(), 
 				position: $("#position").val(),
-				telephone: telephone
+				telephone: telephone,
+				password: password
 			},
 			function(data, status){
-				console.log(status);
+				data = $.parseJSON(data);
+				if(!data.status){
+					document.getElementById("error").innerHTML=data.error;
+					$('#error').show();
+					$("#telephone").focus();
+				} else {
+					$.get("moduls/auth.php", function(data){
+						$("#container").html(data);
+					});
+				}
 			});
 		
 	});
+
+	$("#cancel").click(function(){
+		$.get("moduls/auth.php", function(data){
+			$("#container").html(data);
+		});
+	});
+
+	$("#save_users").click(function(){
+		$('#error').hide();
+		var username = $("#username").val();
+		if(username == ""){
+			console.log("null username");
+			document.getElementById("error").innerHTML="Поле с именем не заполнено";
+			$('#error').show();
+			$("#username").focus();
+			return false;
+		}
+
+		var userlastname = $("#userlastname").val();
+		if(userlastname == ""){
+			console.log("null userlastname");
+			document.getElementById("error").innerHTML="Поле с фамилией не заполнено";
+			$('#error').show();
+			$("#userlastname").focus();
+			return false;
+		}
+		
+		var telephone = $("#telephone").val();
+		if(telephone == ""){
+			console.log("null telephone");
+			document.getElementById("error").innerHTML="Не указан телефон";
+			$('#error').show();
+			$("#telephone").focus();
+			return false;
+		}
+
+		var password = $("#password").val();
+		if(password == ""){
+			console.log("null password");
+			document.getElementById("error").innerHTML="Не указан пароль";
+			$('#error').show();
+			$("#password").focus();
+			return false;
+		}
+
+		$.post("moduls/functions.php",
+			{
+				func: "chenge_users",
+				username: username,
+				userlastname: userlastname,
+				databirthday: $("#databirthday").val(),
+				company: $("#company").val(), 
+				position: $("#position").val(),
+				telephone: telephone,
+				password: password
+			},
+			function(data, status){
+				/* data = $.parseJSON(data); */
+				console.log(data);
+			});
+
+	});
+
+	function check_input(){
+		$('#error').hide();
+			var username = $("#username").val();
+			if(username == ""){
+				console.log("null username");
+				document.getElementById("error").innerHTML="Поле с именем не заполнено";
+				$('#error').show();
+				$("#username").focus();
+				return false;
+			}
+
+			var userlastname = $("#userlastname").val();
+			if(userlastname == ""){
+				console.log("null userlastname");
+				document.getElementById("error").innerHTML="Поле с фамилией не заполнено";
+				$('#error').show();
+				$("#userlastname").focus();
+				return false;
+			}
+			
+			var telephone = $("#telephone").val();
+			if(telephone == ""){
+				console.log("null telephone");
+				document.getElementById("error").innerHTML="Не указан телефон";
+				$('#error').show();
+				$("#telephone").focus();
+				return false;
+			}
+
+			var password = $("#password").val();
+			if(password == ""){
+				console.log("null password");
+				document.getElementById("error").innerHTML="Не указан пароль";
+				$('#error').show();
+				$("#password").focus();
+				return false;
+			}
+	}
 
 	$("#telephone").keypress(function(event){
 		event = event || window.event;

@@ -8,7 +8,7 @@
 </head>
 <body id="container">
     <?php
-        include "moduls/reg.php";
+        include "moduls/auth.php";
     ?>
 </body>
 </html>

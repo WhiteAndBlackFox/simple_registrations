@@ -146,14 +146,6 @@ fieldset
     margin: 25px 0 0 0;
 }
 
-.oblig:after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: red;
-  content: '*';
-}
-
 .button
 {		
     background-color: #ffb94b;
