@@ -29,7 +29,7 @@ body
     background-image: -ms-linear-gradient(top, #fff, #eee);
     background-image: -o-linear-gradient(top, #fff, #eee);
     background-image: linear-gradient(top, #fff, #eee);  
-    height: 240px;
+    height: auto;
     width: 400px;
     margin: -150px 0 0 -230px;
     padding: 30px;
@@ -146,6 +146,14 @@ fieldset
     margin: 25px 0 0 0;
 }
 
+.oblig:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  content: '*';
+}
+
 .button
 {		
     background-color: #ffb94b;
@@ -172,8 +180,9 @@ fieldset
 
     float: left;
     height: 35px;
-    padding: 0;
-    width: 120px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: auto;
     cursor: pointer;
     font: bold 15px Arial, Helvetica;
     color: #8f5a0a;
@@ -274,5 +283,5 @@ fieldset
 
 /*------------------------------------*/
 label{
-    
+    font-size: 10pt;
 }

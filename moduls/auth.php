@@ -3,7 +3,9 @@
     <h1>Форма входа</h1>
     <div id="error"></div>
     <div id="inputs">
-        <input id="username" type="text" placeholder="Логин" autofocus required>   
+        <label for="username">Номер телефона</label>
+        <input id="username" type="text" placeholder="+1234567890" autofocus required>   
+        <label for="password">Пароль</label>
         <input id="password" type="password" placeholder="Пароль" required>
     </div>
     <div id="actions">
