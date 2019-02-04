@@ -13,6 +13,17 @@ if (!$_SESSION["admin"]){
 	$(document).ready(function() {
 		$("#refresh").click(refresh_table);
 
+		$("#exit").click(function() {
+			$.post("moduls/functions.php",
+			{
+				func: "clear_sessions"
+			}, function(data, status){
+				$.get("moduls/auth.php", function(data){
+					$("#container").html(data);
+				});
+			});	
+		});
+
 		function refresh_table(){
 			$.post("moduls/functions.php",
 				{
@@ -23,11 +34,50 @@ if (!$_SESSION["admin"]){
 					/* console.log(data); */
 					$("#body_table").html(data);
 					$("#login").width("auto");
+					$(".button_table").click(function(event){
+						var id = $(this).attr("id");
+						var sp = id.split("_");
+						if (sp[1] == "delete"){
+							$.post("moduls/functions.php",
+							{
+								func: "delete_users",
+								row: sp[0]
+
+							}, function(data, status){
+								refresh_table();
+							});
+						}
+						if (sp[1] == "edit"){
+							<?php 
+								$_SESSION['change'] = "1";
+							?>
+
+							var id = "#"+sp[0];
+							var n = $(id + " td:nth-child(1)").text();
+							var f = $(id + " td:nth-child(2)").text();
+							var db = $(id + " td:nth-child(3)").text();
+							var c = $(id + " td:nth-child(4)").text();
+							var p = $(id + " td:nth-child(5)").text();
+							var t = $(id + " td:nth-child(6)").text();
+							$.get("moduls/reg.php", function(data_php){
+								$("#container").html(data_php);
+								$("#new_users").remove();
+
+								$('#username').val(n);
+								$('#userlastname').val(f);
+								$('#databirthday').val(db);
+								$('#company').val(c);
+								$('#position').val(p);
+								$('#telephone').val(t);
+							});
+						}
+					});
 				});
 		}
 		refresh_table();
 	});
 </script>
+<div id="exit" class="button">Выход</div>
 <form id="login">
     <h1>Список пользователей</h1>
     <table>
@@ -43,6 +93,7 @@ if (!$_SESSION["admin"]){
 			<td>Компания</td>
 			<td>Должность</td>
 			<td>Телефон</td>
+			<td></td>
     	</tr>
     </thead>
     <tbody id="body_table">

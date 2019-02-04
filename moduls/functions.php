@@ -20,23 +20,53 @@ switch ($_POST['func']) {
 			table_users();
 		}
 		break;
+	case 'delete_users':
+		if($_SESSION['admin']){
+			delete_users();
+		}
+		break;
 	default:
 		break;
 }
 
+function delete_users(){
+	$input = fopen('../reg_users.csv', 'r');
+	$output = fopen('../reg_users_temp.csv', 'w');
+	$r = 0;
+	while( false !== ( $data = fgetcsv($input) ) ){
+		print_r($data);
+		if ($r != $_POST['row']) {
+			fputcsv($output, $data);
+		}
+	   $r += 1;
+	}
+	fclose($input);
+	fclose($output);
+
+	unlink('../reg_users.csv');
+	rename('../reg_users_temp.csv', '../reg_users.csv');
+}
+
 function table_users(){
 	$table = "";
+	$r = 0;
 	$filename = '../reg_users.csv';
 	if(file_exists($filename)){
 		$file_users = fopen($filename, "r");	
 		while($row = fgetcsv($file_users)){
-			$table .= "<tr><td>{$row[0]}</td>
-			<td>{$row[1]}</td>
-			<td>{$row[2]}</td>
-			<td>{$row[3]}</td>
-			<td>{$row[4]}</td>
-			<td>{$row[5]}</td>
-			</tr>";
+			$table .= "<tr id='" . $r . "'>
+				<td id='" . $r . "_n'>{$row[0]}</td>
+				<td id='" . $r . "_f'>{$row[1]}</td>
+				<td id='" . $r . "_db'>{$row[2]}</td>
+				<td id='" . $r . "_c'>{$row[3]}</td>
+				<td id='" . $r . "_p'>{$row[4]}</td>
+				<td id='" . $r . "_t'>{$row[5]}</td>
+				<td>
+					<div id='" . $r . "_delete' class=\"button_table\">Удалить</div>
+					<div id='" . $r . "_edit' class=\"button_table\">Изменить</div>
+				</td>
+				</tr>";
+			$r += 1;
 		}
 	}
 	echo $table;
@@ -49,17 +79,19 @@ function clear_sessions(){
 
 function chenge_users(){
 	$json = array('error' => "", "status" => false);
-	var_dump($_POST);
 	try{
 		$input = fopen('../reg_users.csv', 'r');
 		$output = fopen('../reg_users_temp.csv', 'w');
+		var_dump($_POST);
 		while( false !== ( $data = fgetcsv($input) ) ){
-			print_r($data);
 		   if ($data[0] == $_POST['username'] and $data[1] == $_POST['userlastname'] and $data[5] == $_POST['telephone']) {
 		   		$data[2] = $_POST['databirthday'];
 		   		$data[3] = $_POST['company'];
 		   		$data[4] = $_POST['position'];
 		   		$data[6] = $_POST['password'];
+		   		if($_SESSION["change"]){
+		   			$data[7] = $_POST['access'];
+		   		}
 		   }
 		   fputcsv($output, $data);
 		}
@@ -71,6 +103,7 @@ function chenge_users(){
 
 		$json["status"] = true;
 		$json["error"] = "";
+		unset($_SESSION["change"]);
 	} catch (Exception $e){
 		$json["error"] = "Такой номер уже зарегестрирован!";
 	}

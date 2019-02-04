@@ -34,6 +34,16 @@ session_start();
         <input id="telephone" type="text" placeholder="+1234567890" required>
         <label for="password">Пароль<span style="color: #BA0000; font-family: Verdana; font-size: 10pt; font-weight: bold;"> *</span></label>
         <input id="password" type="password" placeholder="Пароль" required>
+        <?php
+        if ($_SESSION["change"]){
+            echo "<div>
+                <select name=\"access_users\">
+                  <option value=\"0\" selected>Пользователь</option>
+                  <option value=\"1\">Администратор</option>
+                </select>
+            </div>";
+        }
+        ?>
     </div>
     <div id="actions">
             <table>

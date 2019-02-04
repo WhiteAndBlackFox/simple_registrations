@@ -114,6 +114,11 @@ $(document).ready(function() {
 			$("#password").focus();
 			return false;
 		}
+		
+		var access = $("access_users").val();
+		if(access == ""){
+			access = 0;
+		}
 
 		$.post("moduls/functions.php",
 			{
@@ -124,11 +129,12 @@ $(document).ready(function() {
 				company: $("#company").val(), 
 				position: $("#position").val(),
 				telephone: telephone,
+				access: access,
 				password: password
 			},
 			function(data, status){
 				/* data = $.parseJSON(data); */
-				console.log(data);
+				/* console.log(data); */
 			});
 
 	});
